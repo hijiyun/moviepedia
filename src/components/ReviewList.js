@@ -6,7 +6,8 @@ const formatDate = (value) => {
   return `${date.getFullYear()}. ${date.getMonth() + 1}. ${date.getDate()}`;
 };
 
-const ReviewListItem = ({ item }) => {
+const ReviewListItem = ({ item, onDelete }) => {
+  const handleDeleteClick = () => onDelete(item.id);
   return (
     <div className="ReviewListItem">
       <img className="ReviewListItem-img" src={item.imgUrl} alt="item image" />
@@ -15,16 +16,21 @@ const ReviewListItem = ({ item }) => {
         <p>{item.rating}</p>
         <p>{formatDate(item.createdAt)}</p>
         <p>{item.content}</p>
+        <button onClick={handleDeleteClick}>삭제</button>
       </div>
     </div>
   );
 };
 
-const ReviewList = ({ items }) => {
+const ReviewList = ({ items, onDelete }) => {
   return (
     <ul>
       {items.map((item) => {
-        return <ReviewListItem item={item} />;
+        return (
+          <div key={item.id}>
+            <ReviewListItem item={item} onDelete={onDelete} />
+          </div>
+        );
       })}
     </ul>
   );
