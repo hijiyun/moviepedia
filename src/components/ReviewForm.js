@@ -24,7 +24,6 @@ const ReviewForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('values', values);
   };
 
   return (
