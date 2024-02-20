@@ -1,19 +1,38 @@
 import React from 'react';
 import './Rating.css';
 
-const Star = ({ selected = false }) => {
+const RATINGS = [1, 2, 3, 4, 5];
+
+const Star = ({ selected = false, rating, onSelect, onHover, onMouseOut }) => {
   const className = `Rating-star ${selected ? 'selected' : ''}`;
-  return <span className={className}>*</span>;
+
+  const handleClick = onSelect ? () => onSelect(rating) : undefined;
+
+  const handleMouseOver = onHover ? () => onHover(rating) : undefined;
+
+  return (
+    <span
+      className={className}
+      onClick={handleClick}
+      onMouseOver={handleMouseOver}
+    >
+      *
+    </span>
+  );
 };
 
-const Rating = ({ value = 0 }) => {
+const Rating = ({ className, value = 0, onSelect, onHover, onMouseOut }) => {
   return (
-    <div>
-      <Star selected={value >= 1} />
-      <Star selected={value >= 2} />
-      <Star selected={value >= 3} />
-      <Star selected={value >= 4} />
-      <Star selected={value >= 5} />
+    <div className={className} onMouseOut={onMouseOut}>
+      {RATINGS.map((rating) => (
+        <Star
+          key={rating}
+          selected={value >= rating}
+          rating={rating}
+          onSelect={onSelect}
+          onHover={onHover}
+        />
+      ))}
     </div>
   );
 };

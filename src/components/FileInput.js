@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const FileInput = ({ name, value, onChange }) => {
-  const [preview, setPreview] = useState();
+const FileInput = ({ name, value, onChange, initialPreview }) => {
+  const [preview, setPreview] = useState(initialPreview);
   const inputRef = useRef();
 
   const handleChange = (e) => {
@@ -24,10 +24,10 @@ const FileInput = ({ name, value, onChange }) => {
     setPreview(nextPreview);
 
     return () => {
-      setPreview();
+      setPreview(initialPreview);
       URL.revokeObjectURL(nextPreview);
     };
-  }, [value]); //파일을 선택할 때마다 미리보기 주소를 바꾸는 거임 !
+  }, [value, initialPreview]); //파일을 선택할 때마다 미리보기 주소를 바꾸는 거임 !
 
   return (
     <div>
