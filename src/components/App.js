@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import ReviewList from './ReviewList';
 import { createReviews, getReviews } from '../api';
 import ReviewForm from './ReviewForm';
+import { LocaleProvider } from '../contexts/LocaleContext';
+import LocaleSelect from './LocaleSelect';
+import useTranslate from '../hooks/useTranslate';
 
 const LIMIT = 6;
 
@@ -60,23 +63,26 @@ const App = () => {
   };
 
   return (
-    <div>
+    <LocaleProvider defaultValue={'ko'}>
       <div>
-        <button onClick={handleNewestClick}>최신순</button>
-        <button onClick={handleBestClick}>베스트순</button>
+        <LocaleSelect />
+        <div>
+          <button onClick={handleNewestClick}>최신순</button>
+          <button onClick={handleBestClick}>베스트순</button>
+        </div>
+        <ReviewForm
+          onSubmit={createReviews}
+          onSubmitSuccess={handleCreateSuccess}
+        />
+        <ReviewList items={sortedItems} onDelete={handleDelete} />
+        {hasNext && (
+          <button disabled={isLoading} onClick={handleLoadMore}>
+            더보기
+          </button>
+        )}
+        {loadingError?.message && <span>{loadingError.message}</span>}
       </div>
-      <ReviewForm
-        onSubmit={createReviews}
-        onSubmitSuccess={handleCreateSuccess}
-      />
-      <ReviewList items={sortedItems} onDelete={handleDelete} />
-      {hasNext && (
-        <button disabled={isLoading} onClick={handleLoadMore}>
-          더보기
-        </button>
-      )}
-      {loadingError?.message && <span>{loadingError.message}</span>}
-    </div>
+    </LocaleProvider>
   );
 };
 
